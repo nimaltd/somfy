@@ -10,7 +10,7 @@
 * Call somfy_init().
 
 Example:
-
+in main.c
 ```
 #include "somfy.h"
 somfy_t rf;
@@ -31,3 +31,25 @@ void main()
   }  
 }
 ```
+
+in stm32fxxx_it.c
+```
+#include "somfy.h"
+extern somfy_t rf;
+
+.
+.
+.
+
+void EXTI9_5_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI9_5_IRQn 0 */
+
+  /* USER CODE END EXTI9_5_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_7);
+  /* USER CODE BEGIN EXTI9_5_IRQn 1 */
+  somfy_pinchange_callback(&rf);
+  /* USER CODE END EXTI9_5_IRQn 1 */
+}
+```
+
